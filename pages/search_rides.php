@@ -23,6 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                   INNER JOIN users u ON r.driver_id = u.id
                   LEFT JOIN bookings b ON r.id = b.ride_id AND b.booking_status != 'cancelled'
                   WHERE r.status = 'active'
+                  AND r.approval_status = 'approved'
                   AND r.origin LIKE ?
                   AND r.destination LIKE ?";
 

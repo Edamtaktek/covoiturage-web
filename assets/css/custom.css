@@ -448,3 +448,192 @@ footer a:hover {
         padding: 20px;
     }
 }
+
+/* Admin Section Styles */
+.admin-link {
+    color: var(--accent-color) !important;
+}
+
+.admin-link:hover {
+    color: #c0392b !important;
+    background-color: #fdf2f2 !important;
+    border-left-color: var(--accent-color) !important;
+}
+
+.admin-link.active {
+    color: var(--accent-color) !important;
+    background-color: #fdf2f2 !important;
+    border-left-color: var(--accent-color) !important;
+}
+
+/* Admin Dashboard Styles */
+.admin-stats-card {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #34495e 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+}
+
+.admin-stats-card .card-body {
+    padding: 25px;
+}
+
+.admin-stats-card h3 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.admin-stats-card p {
+    font-size: 14px;
+    opacity: 0.9;
+    margin: 0;
+}
+
+.admin-stats-card.users {
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+}
+
+.admin-stats-card.rides {
+    background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+}
+
+.admin-stats-card.pending {
+    background: linear-gradient(135deg, #f39c12 0%, #d68910 100%);
+}
+
+.admin-stats-card.bookings {
+    background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+}
+
+/* Admin Tables */
+.admin-table {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.admin-table thead {
+    background-color: var(--bg-light);
+}
+
+.admin-table th {
+    font-weight: 600;
+    color: var(--text-dark);
+    padding: 15px;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.admin-table td {
+    padding: 15px;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.admin-table tbody tr:hover {
+    background-color: var(--bg-light);
+}
+
+/* Status Badges for Admin */
+.status-badge {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.status-badge.pending {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.status-badge.approved {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status-badge.rejected {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.status-badge.active {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status-badge.inactive {
+    background-color: #e2e3e5;
+    color: #383d41;
+}
+
+.status-badge.banned {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* Admin Action Buttons */
+.btn-action {
+    padding: 5px 10px;
+    font-size: 12px;
+    margin-right: 5px;
+    border-radius: 4px;
+}
+
+.btn-action.approve {
+    background-color: #27ae60;
+    color: white;
+    border: none;
+}
+
+.btn-action.approve:hover {
+    background-color: #229954;
+    color: white;
+}
+
+.btn-action.reject {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+}
+
+.btn-action.reject:hover {
+    background-color: #c0392b;
+    color: white;
+}
+
+.btn-action.view {
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+}
+
+.btn-action.view:hover {
+    background-color: #2980b9;
+    color: white;
+}
+
+/* Admin Header */
+.admin-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #34495e 100%);
+    color: white;
+    padding: 30px 40px;
+    margin-bottom: 30px;
+    border-radius: 10px;
+}
+
+.admin-header h1 {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.admin-header p {
+    font-size: 14px;
+    opacity: 0.9;
+    margin: 0;
+}

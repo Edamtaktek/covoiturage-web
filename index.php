@@ -8,7 +8,7 @@ $stats = ['total_users' => 0, 'active_rides' => 0, 'completed_bookings' => 0];
 $db_error = null;
 
 try {
-    // Recuperer les trajets actifs pour la page d'accueil
+    // Recuperer les trajets actifs et approuvés pour la page d'accueil
     $rides_query = "
         SELECT 
             r.*,
@@ -21,6 +21,7 @@ try {
         JOIN users u ON r.driver_id = u.id
         LEFT JOIN bookings b ON r.id = b.ride_id AND b.booking_status IN ('confirmed', 'completed')
         WHERE r.status = 'active' 
+        AND r.approval_status = 'approved'
         AND r.departure_date > NOW()
         GROUP BY r.id
         ORDER BY r.departure_date ASC
