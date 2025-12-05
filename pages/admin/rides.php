@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     break;
                     
                 case 'quick_reject':
-                    $stmt = $db->prepare("UPDATE rides SET approval_status = 'rejected', rejection_reason = 'Rejeté par l''administrateur' WHERE id = ?");
+                    $stmt = $db->prepare("UPDATE rides SET approval_status = 'rejected', rejection_reason = 'Rejeté par l\\'administrateur' WHERE id = ?");
                     $stmt->bind_param('i', $ride_id);
                     $stmt->execute();
                     $success_message = "Trajet rejeté.";
