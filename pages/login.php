@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         try {
             // Chercher l'utilisateur par email
-            $query = "SELECT id, username, email, password, first_name, status FROM users WHERE email = ?";
+            $query = "SELECT id, username, email, password, first_name, status, is_admin FROM users WHERE email = ?";
             $stmt = $db->prepare($query);
             $stmt->bind_param('s', $email);
             $stmt->execute();
@@ -45,9 +45,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $_SESSION['username'] = $user['username'];
                     $_SESSION['email'] = $user['email'];
                     $_SESSION['first_name'] = $user['first_name'];
+                    $_SESSION['is_admin'] = $user['is_admin'];
                     
-                    // Rediriger vers le dashboard
-                    header('Location: dashboard.php');
+                    // Rediriger vers le dashboard admin si c'est un admin
+                    if ($user['is_admin'] == 1) {
+                        header('Location: admin/dashboard.php');
+                    } else {
+                        header('Location: dashboard.php');
+                    }
                     exit;
                 } else {
                     $error = 'Email ou mot de passe incorrect';

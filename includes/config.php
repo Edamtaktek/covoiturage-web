@@ -37,6 +37,23 @@ function isLoggedIn() {
 }
 
 /**
+ * Verifie si l'utilisateur est un administrateur
+ */
+function isAdmin() {
+    return isLoggedIn() && isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1;
+}
+
+/**
+ * Redirige si l'utilisateur n'est pas admin
+ */
+function requireAdmin() {
+    if (!isAdmin()) {
+        header('Location: ../login.php?error=unauthorized');
+        exit;
+    }
+}
+
+/**
  * Recupere l'utilisateur actuel
  */
 function getCurrentUser() {
@@ -47,6 +64,7 @@ function getCurrentUser() {
             'email' => $_SESSION['email'] ?? null,
             'first_name' => $_SESSION['first_name'] ?? null,
             'last_name' => $_SESSION['last_name'] ?? null,
+            'is_admin' => $_SESSION['is_admin'] ?? 0,
         ];
     }
     return null;

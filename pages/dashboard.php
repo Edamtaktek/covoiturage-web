@@ -47,7 +47,7 @@ try {
 
     // Récupérer les trajets proposés par l'utilisateur (conducteur)
     $rides_query = "
-        SELECT r.*, (SELECT COUNT(*) FROM bookings WHERE ride_id = r.id AND booking_status = 'confirmed') as confirmed_bookings
+        SELECT r.*, r.approval_status, (SELECT COUNT(*) FROM bookings WHERE ride_id = r.id AND booking_status = 'confirmed') as confirmed_bookings
         FROM rides r
         WHERE r.driver_id = ? 
         ORDER BY r.departure_date DESC 
@@ -113,8 +113,17 @@ try {
                                         <p class="mb-1">
                                             <span class="badge bg-primary me-2"><?php echo number_format($ride['price_per_seat'], 2); ?> TND / place</span>
                                             <span class="badge bg-info me-2"><?php echo $ride['seats_available']; ?> places disponibles</span>
-                                            <span class="badge bg-success"><?php echo $ride['confirmed_bookings']; ?> réservation(s)</span>
+                                            <span class="badge bg-success me-2"><?php echo $ride['confirmed_bookings']; ?> réservation(s)</span>
+                                            <?php 
+                                                $approval_status = $ride['approval_status'] ?? 'pending';
+                                                $approval_class = $approval_status === 'approved' ? 'bg-success' : ($approval_status === 'rejected' ? 'bg-danger' : 'bg-warning text-dark');
+                                                $approval_label = $approval_status === 'approved' ? 'Approuvé' : ($approval_status === 'rejected' ? 'Rejeté' : 'En attente');
+                                            ?>
+                                            <span class="badge <?php echo $approval_class; ?>"><?php echo $approval_label; ?></span>
                                         </p>
+                                        <?php if ($approval_status === 'rejected' && !empty($ride['rejection_reason'])): ?>
+                                            <small class="text-danger">Raison: <?php echo htmlspecialchars($ride['rejection_reason']); ?></small>
+                                        <?php endif; ?>
                                         <div class="mt-2">
                                             <a href="view_ride.php?id=<?php echo $ride['id']; ?>" class="btn btn-sm btn-outline-secondary">Voir</a>
                                             <a href="edit_ride.php?id=<?php echo $ride['id']; ?>" class="btn btn-sm btn-secondary">Éditer</a>

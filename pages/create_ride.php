@@ -47,9 +47,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Combiner date et heure
         $departure_datetime = $departure_date . ' ' . $departure_time . ':00';
 
-        // Inserer dans la base de donnees
-        $query = "INSERT INTO rides (driver_id, origin, destination, departure_date, seats_available, price_per_seat, vehicle_description, description, status)
-                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'active')";
+        // Inserer dans la base de donnees (approval_status defaults to 'pending')
+        $query = "INSERT INTO rides (driver_id, origin, destination, departure_date, seats_available, price_per_seat, vehicle_description, description, status, approval_status)
+                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'active', 'pending')";
 
         $stmt = $db->prepare($query);
 
@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $ride_id = $stmt->insert_id;
         $stmt->close();
 
-        $success_message = "Trajet créé avec succès! Vous allez être redirigé.";
+        $success_message = "Trajet créé avec succès! Il sera visible après approbation par un administrateur. Vous allez être redirigé.";
 
         // Rediriger apres 2 secondes
         header("Refresh: 2; url=dashboard.php");

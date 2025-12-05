@@ -33,6 +33,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `rating` FLOAT DEFAULT 5.0,
   `reviews_count` INT DEFAULT 0,
   `is_driver` TINYINT(1) DEFAULT 0,
+  `is_admin` TINYINT(1) DEFAULT 0,
   `vehicle_id` INT,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -42,7 +43,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   UNIQUE KEY `email_unique` (`email`),
   UNIQUE KEY `username_unique` (`username`),
   INDEX `status_idx` (`status`),
-  INDEX `is_driver_idx` (`is_driver`)
+  INDEX `is_driver_idx` (`is_driver`),
+  INDEX `is_admin_idx` (`is_admin`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ===============================================
@@ -83,6 +85,8 @@ CREATE TABLE IF NOT EXISTS `rides` (
   `vehicle_description` VARCHAR(255) NULL,
   `description` TEXT,
   `status` ENUM('active', 'completed', 'cancelled') DEFAULT 'active',
+  `approval_status` ENUM('pending', 'approved', 'rejected') DEFAULT 'pending',
+  `rejection_reason` TEXT NULL,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   
@@ -91,6 +95,7 @@ CREATE TABLE IF NOT EXISTS `rides` (
   INDEX `driver_idx` (`driver_id`),
   INDEX `departure_date_idx` (`departure_date`),
   INDEX `status_idx` (`status`),
+  INDEX `approval_status_idx` (`approval_status`),
   INDEX `origin_idx` (`origin`),
   INDEX `destination_idx` (`destination`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -228,20 +233,21 @@ CREATE TABLE IF NOT EXISTS `notifications` (
 -- ===============================================
 
 -- Exemple d'utilisateurs
-INSERT INTO `users` (`username`, `email`, `password`, `first_name`, `last_name`, `phone`, `bio`, `location`, `rating`, `is_driver`, `status`) VALUES
-('john_driver', 'john@example.com', SHA2('password123', 256), 'John', 'Dupont', '0601020304', 'Conducteur expérimenté', 'Paris, France', 4.8, 1, 'active'),
-('marie_passenger', 'marie@example.com', SHA2('password123', 256), 'Marie', 'Martin', '0607080910', 'Voyageur régulier', 'Lyon, France', 4.9, 0, 'active'),
-('pierre_driver', 'pierre@example.com', SHA2('password123', 256), 'Pierre', 'Bernard', '0611121314', 'Covoitureur professionnel', 'Marseille, France', 4.7, 1, 'active');
+INSERT INTO `users` (`username`, `email`, `password`, `first_name`, `last_name`, `phone`, `bio`, `location`, `rating`, `is_driver`, `is_admin`, `status`) VALUES
+('admin', 'admin@covoiturage.com', SHA2('admin123', 256), 'Admin', 'System', '0600000000', 'Administrateur système', 'Tunis, Tunisie', 5.0, 0, 1, 'active'),
+('john_driver', 'john@example.com', SHA2('password123', 256), 'John', 'Dupont', '0601020304', 'Conducteur expérimenté', 'Paris, France', 4.8, 1, 0, 'active'),
+('marie_passenger', 'marie@example.com', SHA2('password123', 256), 'Marie', 'Martin', '0607080910', 'Voyageur régulier', 'Lyon, France', 4.9, 0, 0, 'active'),
+('pierre_driver', 'pierre@example.com', SHA2('password123', 256), 'Pierre', 'Bernard', '0611121314', 'Covoitureur professionnel', 'Marseille, France', 4.7, 1, 0, 'active');
 
 -- Exemple de véhicules
 INSERT INTO `vehicles` (`owner_id`, `vehicle_type`, `brand`, `model`, `color`, `license_plate`, `seats_total`, `registration_year`, `description`) VALUES
-(1, 'Voiture', 'Peugeot', '308', 'Bleu', 'AB-123-CD', 5, 2020, 'Voiture confortable et économe en carburant'),
-(3, 'Monospace', 'Renault', 'Scenic', 'Noir', 'EF-456-GH', 7, 2019, 'Grand monospace avec climatisation');
+(2, 'Voiture', 'Peugeot', '308', 'Bleu', 'AB-123-CD', 5, 2020, 'Voiture confortable et économe en carburant'),
+(4, 'Monospace', 'Renault', 'Scenic', 'Noir', 'EF-456-GH', 7, 2019, 'Grand monospace avec climatisation');
 
 -- Exemple de trajets
-INSERT INTO `rides` (`driver_id`, `vehicle_id`, `origin`, `destination`, `departure_date`, `arrival_date`, `seats_available`, `price_per_seat`, `total_price`, `description`, `status`) VALUES
-(1, 1, 'Paris', 'Lyon', '2025-10-25 08:00:00', '2025-10-25 12:30:00', 3, 25.00, 75.00, 'Trajet confortable avec pauses', 'active'),
-(3, 2, 'Marseille', 'Nice', '2025-10-26 14:00:00', '2025-10-26 16:00:00', 5, 15.00, 75.00, 'Petite distance, route côtière', 'active');
+INSERT INTO `rides` (`driver_id`, `vehicle_id`, `origin`, `destination`, `departure_date`, `arrival_date`, `seats_available`, `price_per_seat`, `total_price`, `description`, `status`, `approval_status`) VALUES
+(2, 1, 'Paris', 'Lyon', '2025-10-25 08:00:00', '2025-10-25 12:30:00', 3, 25.00, 75.00, 'Trajet confortable avec pauses', 'active', 'approved'),
+(4, 2, 'Marseille', 'Nice', '2025-10-26 14:00:00', '2025-10-26 16:00:00', 5, 15.00, 75.00, 'Petite distance, route côtière', 'active', 'approved');
 
 -- ===============================================
 -- INDEXES SUPPLÉMENTAIRES POUR LES PERFORMANCES
